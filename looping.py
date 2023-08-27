@@ -21,14 +21,12 @@ def Looping(cmd:str):
                 print(config.taskOk_msg)
               
                 t = task.Task(break_task[0])
-                t.setTask(break_task[1])
-                t.setTask(break_task[2])
+                t.setTaskName(break_task[1])
+                t.setTaskCatagory(break_task[2])
                 list_of_task.append(t) # type: ignore
-                print(list_of_task)
                 id = list_of_task.index(t) # type: ignore
-                print(id)
+                t.setId(id)
 
-                print(t)
                
         
              
