@@ -3,30 +3,25 @@ class Task():
 
     def __init__(self,command:str) -> None:
         self.command = command
-        self.taskId = id
         self.taskName = None
         self.taskCatagory = None
         self.marked = False
         self.deadLine = None
         self.plan = None
       
-
     def setTaskName(self,task:str) -> None:
         self.taskName = task
 
     def setTaskCatagory(self,item:str) -> None:
         self.taskCatagory = item
          
-    def setId(self,newId:int) -> None:
-        self.taskId = newId
-
     def __str__(self) -> str: 
         if self.command == "todo":
-            return "    [{}][{}] {} {}".format(config.todo_symbol,config.mark_symbol if self.marked else " ",self.taskName,self.taskCatagory)
+            return "    [{}][{}] {} {}".format(config.todo_symbol,config.mark_symbol if self.marked else config.space,self.taskName,self.taskCatagory)
         elif self.command == "deadline":
-            return "    [{}][{}] {} {} {}".format(config.deadline_symbol,config.mark_symbol if self.marked else " ",self.taskName,self.taskCatagory,self.deadLine)
+            return "    [{}][{}] {} {} {}".format(config.deadline_symbol,config.mark_symbol if self.marked else config.space,self.taskName,self.taskCatagory,self.deadLine)
         elif self.command == "event":
-            return "    [{}][{}] {} {} {}".format(config.event_symbol,config.mark_symbol if self.marked else " ",self.taskName,self.taskCatagory,self.plan)
+            return "    [{}][{}] {} {} {}".format(config.event_symbol,config.mark_symbol if self.marked else config.space,self.taskName,self.taskCatagory,self.plan)
         else:
             return " Error "
         
@@ -41,13 +36,12 @@ class Task():
         
         
 
-def markObj(obj:Task)->None:
+def markObj(obj:Task)-> None:
     obj.marked = True
         
-def unmarkObj(obj:Task)->None:
+def unmarkObj(obj:Task)-> None:
     obj.marked = False
-        
-
+    
 # data structure fixing is required  
 # delete 
 # type problem needed to fix
