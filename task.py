@@ -1,47 +1,79 @@
 import config
 class Task():
+    command     : str
+    action      : str
+    item        : str
+    marked      : bool
+    symbol      : str
 
-    def __init__(self,command:str) -> None:
-        self.command = command
-        self.taskName = None
-        self.taskCatagory = None
+    def __init__(self) -> None:
+        self.command        = ""
+        self.action         = ""
+        self.item           = ""
+        self.marked         = False
+        self.symbol         = ""
+        
+    def setCommand(self,cmd:str) -> None: # todo borwoo book 
+        self.command = cmd
+
+    def setAction(self,act:str) -> None:
+        self.action = act
+    
+    def setSymbol(self,syb:str) -> None:
+        self.symbol = syb
+        
+    def setItem(self,itm:str) -> None:
+        self.item = itm
+        
+    def getItem(self) -> str:
+        return self.item
+    
+    def markedTask(self) -> None:
+        self.marked = True
+    
+    def unmarkedTask(self) -> None:
         self.marked = False
-        self.deadLine = None
-        self.plan = None
-      
-    def setTaskName(self,task:str) -> None:
-        self.taskName = task
-
-    def setTaskCatagory(self,item:str) -> None:
-        self.taskCatagory = item
+    
+    def symbolGenertor(self) -> str:
+        return config.markedSymbol if self.marked else config.space
+        
+    def __str__(self) -> str:
+        return "  [{}][{}] {} {}".format(self.symbol,self.symbolGenertor(),self.action,self.item)
          
-    def __str__(self) -> str: 
-        if self.command == "todo":
-            return "    [{}][{}] {} {}".format(config.todo_symbol,config.mark_symbol if self.marked else config.space,self.taskName,self.taskCatagory)
-        elif self.command == "deadline":
-            return "    [{}][{}] {} {} {}".format(config.deadline_symbol,config.mark_symbol if self.marked else config.space,self.taskName,self.taskCatagory,self.deadLine)
-        elif self.command == "event":
-            return "    [{}][{}] {} {} {}".format(config.event_symbol,config.mark_symbol if self.marked else config.space,self.taskName,self.taskCatagory,self.plan)
-        else:
-            return " Error "
-        
-    def set_DeadLine(self,artical:str,duedate:str)-> None:
-        art = artical[1:]
-        self.deadLine = "("+art+": "+duedate+")"
     
-    def set_start_and_end(self,art1:str,day:str,time_1:str,art2:str,time_2:str):
-        a1 = art1[1:]
-        a2 = art2[1:]
-        self.plan = "("+a1+": "+day+" "+time_1+" "+a2+": "+time_2+")"
+class TaskWithDeadLine(Task):
+    deadLine    : str
+    hasDeadLine : bool
+    
+    def __init__(self) -> None:
+        super().__init__()
+        self.deadLine    = ""
+        self.hasDeadLine = False
+    
+    def setDeadLine(self,date:str) -> None:
+        self.deadLine = f"(by: {date})"
+        self.hasDeadLine = True
         
+    def __str__(self) -> str:
+        return "  [{}][{}] {} {} {}".format(self.symbol,self.symbolGenertor(),self.action,self.item,self.deadLine)
         
+class TaskWithPlan(Task):
+    planTime    : str
+    hasPlan     : bool
+    
+    def __init__(self) -> None:
+        super().__init__()
+        self.planTime = ""
+        self.hasPlan  = False
+        
+    def setPlanTime(self,day:str,start:str,end:str) -> None:
+        self.planTime = f"(from: {day} {start} to: {end})"
+        self.hasPlan  = True
+    
+    def __str__(self) -> str:
+        return "  [{}][{}] {} {} {}".format(self.symbol,self.symbolGenertor(),self.action,self.item,self.planTime)
+    
 
-def markObj(obj:Task)-> None:
-    obj.marked = True
-        
-def unmarkObj(obj:Task)-> None:
-    obj.marked = False
-    
-# data structure fixing is required  
-# delete 
-# type problem needed to fix
+# class for Task viewer
+# controller has view 
+

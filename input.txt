@@ -1,1 +1,8 @@
 todo borrow book
+
+
+
+To Fix
+Data base
+Looping 
+Command function

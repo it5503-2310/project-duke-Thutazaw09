@@ -1,33 +1,37 @@
-import task
 
-class DB: # database of object
+class DB: 
+    
+    __storage : list
+    __count   : int
+    
     def __init__(self) -> None:
-        self.storage = [task.Task]
-        self.count = 0
+        self.__storage = []
+        self.__count = 0
+    
+    def addItem(self,item:any) -> None:
+        self.__storage.append(item)
+        self.__count += 1
         
-    def countTask(self) -> str:
-        return "Now you have {} tasks in the list.".format(len(self.storage)-1) # type: ignore
-    
-    def addTask(self,obj:task.Task) -> None:
-        self.storage.append(obj)  # type: ignore
-        self.count += 1
-    
-    def removeTask(self,id:int) -> task.Task:
-        self.count -= 1
-        return self.storage.pop(id) # type: ignore
-    
-    def accessTask(self,id:int) -> task.Task:
-        return self.storage[id] # type: ignore
-        
-    def listTask(self) -> None:
-        for i in range(1,len(self.storage)):
-            print(i,"." + str(self.storage[i]))
+    def getItem(self,position:int) -> any:
+        return self.__storage[position]
     
     def getCount(self) -> int:
-        return self.count
+        return self.__count
     
-    def findByKeyword(self,kwad:str)-> None: # print 
-        for i in range(1,len(self.storage)):
-            if self.storage[i].taskCatagory == kwad: # type: ignore
-                print(self.storage[i])
-            
+    def remmoveItem(self,position:int) -> any:
+        if self.__count >= 1:
+            # Check if 'position' is within bounds
+            if 0 <= position < self.__count:
+                self.__count -= 1
+                return self.__storage.pop(position)
+            else:
+                raise IndexError("Invalid position")
+        else:
+            raise IndexError("No items to remove")
+        
+    def __str__(self) -> str:
+        return "Now you have {} tasks in the list.".format(self.getCount())
+    
+   
+    
+    
