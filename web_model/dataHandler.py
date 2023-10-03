@@ -31,6 +31,3 @@ def unmarkTask(task: dict[str, Any]) -> None:
 
 def updateId(task: dict[str, Any], id: int) -> None:
     task["id"] = id
-
-
-

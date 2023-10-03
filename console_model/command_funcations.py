@@ -1,9 +1,11 @@
-from console_model import config,extractor,task,taskPrinter
+from console_model import config, extractor, taskPrinter
+from task_model import task
 from database_model import dataBase
+from typing import Any
 
 
 def TodoFunction() -> None:
-    def helper(DataStorage: dataBase.DB, lst: list[str]) -> None:
+    def helper(DataStorage: dataBase.DB, lst: list[str]) -> Any:
         if len(lst) < 3:
             print(config.emptyDescriptionTodoMessage)
         else:
@@ -18,11 +20,11 @@ def TodoFunction() -> None:
             print(taskPrinter.printTask(tsk))
             print(taskPrinter.dataBasePrinter(DataStorage))
 
-    return lambda x, y: helper(x, y)
+    return lambda x, y: helper(x, y)  # type: ignore
 
 
 def deadLineFunction() -> None:
-    def helper(DataStorage: dataBase.DB, lst: list[str]) -> None:
+    def helper(DataStorage: dataBase.DB, lst: list[str]) -> Any:
         if len(lst) < 5:
             print(config.missingArgumentMessage)
         else:
@@ -41,11 +43,11 @@ def deadLineFunction() -> None:
             print(taskPrinter.printTask(tsk))
             print(taskPrinter.dataBasePrinter(DataStorage))
 
-    return lambda x, y: helper(x, y)
+    return lambda x, y: helper(x, y)  # type: ignore
 
 
 def eventFunction() -> None:
-    def helper(DataStorage:dataBase.DB, lst: list[str]) -> None:
+    def helper(DataStorage: dataBase.DB, lst: list[str]) -> Any:
         if len(lst) < 8:
             print(config.missingArgumentMessage)
 
@@ -67,11 +69,11 @@ def eventFunction() -> None:
             print(taskPrinter.printTask(tsk))
             print(taskPrinter.dataBasePrinter(DataStorage))
 
-    return lambda x, y: helper(x, y)
+    return lambda x, y: helper(x, y)  # type: ignore
 
 
 def listFunction() -> None:
-    def helper(DataStorage: dataBase.DB, lst: list[str]) -> None:
+    def helper(DataStorage: dataBase.DB, lst: list[str]) -> Any:
         dataCount = DataStorage.getCount()
         if dataCount < 1:
             print(config.listMessage)
@@ -80,15 +82,16 @@ def listFunction() -> None:
             for position in range(dataCount):
                 number = position + 1
                 orderString = "{}.".format(number)
-                taskString = taskPrinter.printTask(DataStorage.getItem(position))
+                taskString = taskPrinter.printTask(
+                    DataStorage.getItem(position))
                 print(orderString+taskString)
 
-    return lambda x, y: helper(x, y)
+    return lambda x, y: helper(x, y)  # type: ignore
 
 
-def markedFunction() -> None:
+def markedFunction() -> Any:
 
-    def helper(DataStorage: dataBase.DB, lst: list[str]) -> None:
+    def helper(DataStorage: dataBase.DB, lst: list[str]) -> Any:
 
         if DataStorage.getCount() < 1:
             print(config.errorMessage)
@@ -100,12 +103,12 @@ def markedFunction() -> None:
         print(config.markedMessage)
         print(taskPrinter.printTask(task))
 
-    return lambda x, y: helper(x, y)
+    return lambda x, y: helper(x, y)  # type: ignore
 
 
-def unmarkedFunction() -> None:
+def unmarkedFunction() -> Any:
 
-    def helper(DataStorage: dataBase.DB, lst: list[str]) -> None:
+    def helper(DataStorage: dataBase.DB, lst: list[str]) -> Any:
         if DataStorage.getCount() < 1:
             print(config.errorMessage)
 
@@ -115,12 +118,12 @@ def unmarkedFunction() -> None:
 
         print(config.unmarkedMessage)
         print(taskPrinter.printTask(task))
-    return lambda x, y: helper(x, y)
+    return lambda x, y: helper(x, y)  # type: ignore
 
 
-def findFunction() -> None:
+def findFunction() -> Any:
 
-    def helper(DataStorage: dataBase.DB, lst: list[str]) -> None:
+    def helper(DataStorage: dataBase.DB, lst: list[str]) -> Any:
         dataCount = DataStorage.getCount()
         if dataCount < 1:
             print(config.errorMessage)
@@ -133,12 +136,12 @@ def findFunction() -> None:
                 if keyword == extractor.extractItem(temp):
                     print(taskPrinter.printTask(task))
 
-    return lambda x, y: helper(x, y)
+    return lambda x, y: helper(x, y)  # type: ignore
 
 
-def deleteFunction() -> None:
+def deleteFunction() -> Any:
 
-    def helper(DataStorage: dataBase.DB, lst: list[str]) -> None:
+    def helper(DataStorage: dataBase.DB, lst: list[str]) -> Any:
         if DataStorage.getCount() < 1:
             print(config.errorMessage)
 
@@ -148,4 +151,4 @@ def deleteFunction() -> None:
         print(taskPrinter.printTask(task))
         print(taskPrinter.dataBasePrinter(DataStorage))
 
-    return lambda x, y: helper(x, y)
+    return lambda x, y: helper(x, y)  # type: ignore
