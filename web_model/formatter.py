@@ -19,15 +19,3 @@ def dataFormatter(data: Any, id: int) -> Any:
             responseDict[name] = commandPayload[name]
 
     return responseDict
-
-
-def markTask(task: dict[str, Any]) -> None:
-    task["done"] = True
-
-
-def unmarkTask(task: dict[str, Any]) -> None:
-    task["done"] = False
-
-
-def updateId(task: dict[str, Any], id: int) -> None:
-    task["id"] = id
