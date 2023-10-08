@@ -33,9 +33,18 @@ python duke-cli.py
 - printingDottedLine()  -> Print dotted line.
 - spaceDottedSpace()    -> Skip one line and print dotted line.
 - unknowCommand()       -> Print the unknown command message.
-- dataBasePrinter()     -> Print the count of the database.
-- printTask()           -> Print the task accordingly.
+- dataBasePrinter()     -> Take database object and print the count of the database.
+- printTask()           -> Take the task object and print in format accordingly.
 #### extractor.py
+- textSeparater()           -> Take the incoming command text, split it by "space" and return the list of string of command.
+- extractCommandType()      -> Take the list of string of command and return the command type.
+- extractCommandTitle()     -> Take the list of string of command and return the command title.
+- extractDeadLine()         -> Take the list of string of command and return the due_time.
+- extractStartTimeForPlan() -> Take the list of string of command and return the start_time.
+- extractEndTimeForPlan()   -> Take the list of string of command and return the end_time.
+- extractTargetIdOfTask()   -> Take the list of string of command and return the id from command.
+- extractKeyWordOfTask()    -> Take the list of string of command and return the keyword that user want to find.
+- extractItem()             -> Take the command title and return the item name.
 #### command_data.py
 
 #### command_functions.py
