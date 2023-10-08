@@ -2,7 +2,8 @@
 
 > The whole project is based on the idea of `data saving` to the database and `data loading` from the database.  
   Both `console` and `web` applications use the` task object` and `database object` as main component.  
-  However, `helper functions` are varied due the `different` usage.
+  However, `helper functions` are varied due the `different` usage.  
+  All the `commands` inputted from the user, both from console and web, are set to `object` and store in the `Storage`.
 
 ## Console Application `duke-cli`
 ### Explanation
@@ -80,49 +81,74 @@ python duke-cli.py
 ```bash
 flask --app duke-web.py run
 ```
-- This will initialize the `web` `server` by running the [duke-web.py](duke-web.py).
+- This will initialize the `duke web` `server` by running the [duke-web.py](duke-web.py).
+- The interaction with client to server is connected via `5 end point` through `Flask`.
+- As soon as the server is initialized, the `Stoarge` is created.
+- The endpoint,` @app.get('/')` make sure the client to server connection is established.
+- The first endpoint, `@app.get('/tasks')` is responsible for displying of the data. The function `list_or_find()` is 
+responsible for displaying the data. It has `two features`; one is just listing all the element inside the database and the other is finding the data via `keyword`. This is done by changing the `task` `objects` stored in the database into `list of dict` and if no keyword is given, `all the data` are displayed. If the keyword is give, the tasks, item matching the keyword, will display.
+- The second endpoint,` @app.post('/tasks')` is responsible for `creating` the task. It give the data inputted by the user in the `json` format. The function` create()` is requsting the data by using `request.json` and changed the data format to python dictionary and then to task object and stored in the database.
+- The thrid endpoint, `@app.patch('/tasks/<int:id>/mark')`, is responsible for marking the task as `done`. The function` mark()` get the `task` by `id` from the database and set the `done` attribute of the task to `True`.
+- The fouth endpoint, `@app.patch('/tasks/<int:id>/unmark')`, is responsible for marking the task as `not done`. The function `unmark()` get the `task` by `id` from the database and set the `done` attribute of the task to `False`.
+- The fifth endpoint, `@app.delete('/tasks/<int:id>')`, is responsbile for `deleting` the task from the database. The function `delete()` remove the `task` by `id` from the database and `reset` the `id` of remaining tasks in the database.
 
-
-
-
-
-baldsca faaj sldfjha sdd
-
-a
-sd fasdf 
-ads
-f a
-sdf 
-asdf
-
-Neeed  to add explanation 
-
+### Example Data in Different Formats
+Data in json
+```json
+{
+  "type": "event",
+  "payload": {
+    "title": "IT5503 Lecture",
+    "start_time": "Monday 7pm",
+    "end_time": "Monday 9pm"
+  }
+}
+```
+Data in python Dictionary format
+```python
+{
+  "type": "event",
+  "title": "IT5503 Lecture",
+  "start_time": "Monday 7pm",
+  "end_time": "Monday 9pm",
+  "id": 1,
+  "done": False
+  }
+```
 
 
 ### Remark
 > All the `modules` related to `web application` are stored in the [web_model](\assets\client) folder.  
   The web `client` is located in the `submodule` of the project `assets/client` folder.   
-  The web server and client `interaction` is done by `Flask` API.
+  The web server and client `interaction` is done by `Flask` API.  
+  The important of this api is changing the data in `json` format to python `dictionary` format for displaying and `task object` for displaying.
 
 ### Functions 
 
 ### Operation Functions
-| Module Name          | Function Name              | Input        | Return    |         Description          |
-| ---------------------| ---------------------------| -------------| ----------| -----------------------------|
+| Module Name          | Function Name   | Input   | Return  |         Description          |
+| ---------------------| ----------------| --------| --------| -----------------------------|
+| operationFunctions.py| `markTask()`    | `object`| `None`  | Set the `done` of the task object to `True`|
+| operationFunctions.py| `unmarkTask()`  | `object`| `None`  | Set the `done` of the task object to `False`|
 ### Formatter Functions
-| Module Name          | Function Name              | Input        | Return    |         Description          |
-| ---------------------| ---------------------------| -------------| ----------| -----------------------------|
+| Module Name  | Function Name      | Input         | Return    |         Description          |
+| -------------| -------------------| ------------- | ----------| -----------------------------|
+| formatter.py | `dataFormatter()`  | `dict{}`,`int`| `dict{}`  | Change the `data` in `json` format into python dictionary `format`|
+
 ### Task to Object Translation Functions
-| Module Name          | Function Name              | Input        | Return    |         Description          |
-| ---------------------| ---------------------------| -------------| ----------| -----------------------------|
+| Module Name           | Function Name | Input   | Return    |         Description          |
+| --------------------- | --------------| --------| ----------| -----------------------------|
+| dictToObjFormatter.py | `dictToObj()` | `dict{}`| `object`  | Take data in dictionary format and create the `task` object according to the `command type`|
+
+
 ### Object to Task Translation Functions
-| Module Name          | Function Name              | Input        | Return    |         Description          |
-| ---------------------| ---------------------------| -------------| ----------| -----------------------------|
-
-dict structture adnfa sdfa sdfakls dfalsjd fal;ksdjf a;lksdjfl
-
-
-
+| Module Name          | Function Name             | Input   | Return    |         Description          |
+| ---------------------| --------------------------| --------| ----------| -----------------------------|
+| objToDictFormatter.py| `taskToDict()`            | `object`|`dict{}`   | Change the `task` object into python `dictionary` format|
+| objToDictFormatter.py| `taskWithDueTimeToDict()` | `object`| `dict{}`  | Change the `task with due_time` object into python `dictionary` format|
+| objToDictFormatter.py| `taskWithPlanToDict()`    | `object`| `dict{}`  | Change the `task with plan` object into python `dictionary` format|
+| objToDictFormatter.py| `objToDict()`             | `object`| `dict{}`  | Change the `task` into python `dictionary` format accordingly|
+| objToDictFormatter.py| `makeDictsList()`         | `object`| `list[]`  | Change `all the tasks object` in the database into python `dictionary` format|
 ##   
 
 
@@ -166,26 +192,100 @@ python duke-test.py
 ##   
 
 ## Classes
-> The applications are created  asdf asdf asdf asdf asdf asdfa sdfasdf asdf asdf
-
-
-
-
-
+> This the `foundation` of the project.  
+  All the `commands` inputted by the users are changed into `task` object.   
+  `Formatting` is done with the help of `helper` functions.  
+  In `console` application, the` text strings` inputted by user are breaked by `space` and set to the `attribute` of the class respectively.  
+  In `web` application, the `json` formatted data, received from the API via end point `@app.post('/tasks')` is changed into task object's `attribute`.
+  The `Storage` is created by using the `DB() class` which is also the heart of the project.  
+  All the `tasks` are stored in the `Storage` object.
 
 ### Remark
 > All the `modules` related to `task` are stored in the `task.py` module in the [task_model](\task_model\task.py) folder. 
-
+> All the `attributes` of the classes are `private`.
 ### Task Class
-> dadsjf lasdjfa losd fjalksdkf alksd
+- This class is used to create `todo` task object.
+
+#### Attributes 
+| Attribute Name | Data Type |
+| ---------------|-----------| 
+| __type         |`str`      |
+| __title        |`str`      |
+| __done         |`str`      |
+| __symbol       |`str`      |
+| __id           |`int`      |  
+  
+#### Getter and Setter
+| Function Name       | Input      | Return |         Description                  |
+| --------------------|--------    | -------| -----------------------------------  |
+| `setType()`         |`self`,`str`|`None`    | Set the `type` of the task         |
+| `setTitle()`        |`self`,`str`|`None`    | Set the `title` of the task        |
+| `setSymbol()`       |`self`,`str`|`None`    | Set the `symbol` of the task       |
+| `markedTask()`      |`self`      |`None`    | Set the `done` of the task to `True` |
+| `unmarkedTask()`    |`self`      |`None`    | Set the `done` of the task to `False`|
+| `setId()`           |`self`,`int`|`None`    | Set the `id` of the task           |
+| `getType()`         |`self`      |`str`     | Get the `type` of the task         |
+| `getTitle()`        |`self`      |`str`     | Get the `title` of the task        |
+| `getSymbol()`       |`self`      |`str`     | Get the `symbol` of the task       |
+| `getDoneCondition()`|`self`      |`bool`    | Get the `done` of the task         |
+| `getId()`           |`self`      |`int`     | Get the `id` of the task           |
+
+
 ### Task with DueTime
-> dadsjf lasdjfa losd fjalksdkf alksd
+- This class is used to create `deadline` task object.
+- Inherited from the parent class `Task()`
+
+#### Attributes 
+| Attribute Name | Data Type |
+| ---------------|-----------| 
+| __dueTime      |`str`      |
+
+  
+#### Getter and Setter
+| Function Name     | Input      | Return |         Description              |
+| ------------------|--------    | -------| -------------------------------  |
+| `setDueTime()`    |`self`,`str`|`None`  | Set the `due time` of the task   |
+| `getDueTime()`    |`self`      |`str`   | Get the `due time` of the task   |
+
+
 ### Task with plan
-> dadsjf lasdjfa losd fjalksdkf alksd
+- This class is used to create `event` task object.
+- Inherited from the parent class `Task()`
+#### Attributes 
+| Attribute Name | Data Type |
+| ---------------|-----------| 
+| __startTime    |`str`      |
+| __endTime      |`str`      |
+
+  
+#### Getter and Setter
+| Function Name     | Input      | Return   |         Description                |
+| ----------------  |--------    | -------  | ---------------------------------  |
+| `setStartTime()`  |`self`,`str`|`None`    | Set the `start time` of the plan   |
+| `setEndTime()`    |`self`,`str`|`None`    | Set the `end time` of the plan     |
+| `getStartTime()`  |`self`      |`str`     | Get the `start time` of the plan   |
+| `getEndTime()`    |`self`      |`str`     | Get the `end time` of the plan     |
+
+
+
 ### Database Class
-> dadsjf lasdjfa losd fjalksdkf alksd
-
-
+> This is the `database` of the project for storing the `tasks`.
+> The database is base on the` list[]` for flexibility of saving and loading of data.
 ### Remark
 > All the `modules` related to `database` are stored in the `dataBase.py` module in the [database_model](\task_model\task.py) folder.  
 
+#### Attributes 
+| Attribute Name | Data Type |
+| ---------------|-----------| 
+| __storage      |`str`      |
+| __count        |`int`      |
+ 
+#### Getter and Setter
+| Function Name | Input          | Return |         Description                             |
+| --------------|----------------| -------| ------------------------------------------------|
+| `addItem()`     |`self`,`object`   |`None`    | Adding item to the `list`, database storage       |
+| `getItem()`     |`self`,`int`      |`object`  | Loading item from the `list`, database storage    |
+| `getCount()`    |`self`            |`int`     | Get the total `count` of the item in the database |
+| `removeItem()`  |`self`,`int`      |`object`  | Remove the `item` from the database               |
+| `getStorage()`  |`self`            |`list[]`  | Get the `whole storage` of the database           |
+| `clearStorage()`|`self`            |`None`    | Delete `all the data` from the database           |
